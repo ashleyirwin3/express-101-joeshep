@@ -1,9 +1,13 @@
 'use strict'
 // use express as a web server
 // serve up static files
-
+require('dotenv').config()
 const express = require('express')
 const app = express()
+
+// routes modules
+const routes = require('./routes/')
+
 
 // basic express apps include routes, routing, middleware(functions)
 
@@ -20,26 +24,11 @@ const requestTime = (req, res, next) => {
 app.use(express.static(__dirname + '/public'))
 
 app.use(requestTime)
-// use app.get to assign new routes/tests if the path matches and exsiting static file
-app.get('/monkeys', (req, res, next) => {
- console.log("dwlskksl")
- console.log(`This ran at ${req.requestedTime}`)
- res.sendFile(__dirname + '/public/monkeys.html')
-})
 
-app.get('/chickens', (req, res, next) => {
-  console.log('dfskflsdf')
-  res.send('<h3>No chickens for you</h3><form method="POST"><input type="text"><button type="submit">push</button></form>')
-})
+app.use(routes)
 
-// on a post, do these particular things on request
-app.post('/chickens', (req, res, next) => {
-  console.log('posting a form for chickens')
-})
+const port = process.env.PORT || 3000
 
-app.use( (req, res) => {
-  res.send('nope')
-})
-app.listen(3000, () => {
-  console.log("Server listening on port 3000")
+app.listen(port, () => {
+  console.log(`Server listening on ${port}`)
 })
